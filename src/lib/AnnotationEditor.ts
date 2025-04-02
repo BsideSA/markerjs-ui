@@ -1,5 +1,6 @@
 import { MarkerArea } from "@markerjs/markerjs3";
 import styles from "./lib.css?inline";
+import { EditorToolbar } from "./EditorToolbar";
 
 export class AnnotationEditor extends HTMLElement {
   private _mainContainer?: HTMLDivElement;
@@ -12,6 +13,8 @@ export class AnnotationEditor extends HTMLElement {
     return this._markerArea;
   }
 
+  private _toolbar?: EditorToolbar;
+
   public targetImage?: HTMLImageElement;
 
   constructor() {
@@ -19,6 +22,8 @@ export class AnnotationEditor extends HTMLElement {
 
     this.addStyles = this.addStyles.bind(this);
     this.createLayout = this.createLayout.bind(this);
+    this.addMarkerArea = this.addMarkerArea.bind(this);
+    this.addToolbar = this.addToolbar.bind(this);
 
     this.attachShadow({ mode: "open" });
   }
@@ -27,6 +32,7 @@ export class AnnotationEditor extends HTMLElement {
     this.addStyles();
     this.createLayout();
     this.addMarkerArea();
+    this.addToolbar();
   }
 
   disconnectedCallback() {}
@@ -46,8 +52,6 @@ export class AnnotationEditor extends HTMLElement {
     this._toolbarContainer = document.createElement("div");
     this._toolbarContainer.id = "toolbarContainer";
 
-    this._toolbarContainer.innerHTML = `<p>toolbar</p>`;
-
     this._mainContainer.appendChild(this._toolbarContainer);
 
     this._markerAreaContainer = document.createElement("div");
@@ -63,18 +67,25 @@ export class AnnotationEditor extends HTMLElement {
 
     this._mainContainer.appendChild(this._toolboxContainer);
 
-    // // tmp
-    // this._mainContainer.innerHTML = `<p class="text-3xl hover:text-red-400">Hello World!</p>
-    // <button class="btn btn-primary">Button</button>`;
-
     this.shadowRoot?.appendChild(this._mainContainer);
   }
 
   private addMarkerArea() {
-    if (this.targetImage && this._markerArea === undefined) {
+    if (
+      this.targetImage &&
+      this._markerAreaContainer &&
+      this._markerArea === undefined
+    ) {
       this._markerArea = new MarkerArea();
       this._markerArea.targetImage = this.targetImage;
-      this._markerAreaContainer?.appendChild(this._markerArea);
+      this._markerAreaContainer.appendChild(this._markerArea);
+    }
+  }
+
+  private addToolbar() {
+    if (this._toolbar === undefined && this._toolbarContainer) {
+      this._toolbar = new EditorToolbar();
+      this._toolbarContainer.appendChild(this._toolbar.getUI());
     }
   }
 }
