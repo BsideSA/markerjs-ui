@@ -1,3 +1,4 @@
+import { MarkerArea } from "@markerjs/markerjs3";
 import styles from "./lib.css?inline";
 
 export class AnnotationEditor extends HTMLElement {
@@ -5,6 +6,13 @@ export class AnnotationEditor extends HTMLElement {
   private _toolbarContainer?: HTMLDivElement;
   private _toolboxContainer?: HTMLDivElement;
   private _markerAreaContainer?: HTMLDivElement;
+
+  private _markerArea?: MarkerArea;
+  public get markerArea() {
+    return this._markerArea;
+  }
+
+  public targetImage?: HTMLImageElement;
 
   constructor() {
     super();
@@ -18,6 +26,7 @@ export class AnnotationEditor extends HTMLElement {
   connectedCallback() {
     this.addStyles();
     this.createLayout();
+    this.addMarkerArea();
   }
 
   disconnectedCallback() {}
@@ -45,8 +54,6 @@ export class AnnotationEditor extends HTMLElement {
     this._markerAreaContainer.id = "markerAreaContainer";
     this._markerAreaContainer.className = "flex overflow-hidden bg-slate-50";
 
-    this._markerAreaContainer.innerHTML = `<p>marker area</p>`;
-
     this._mainContainer.appendChild(this._markerAreaContainer);
 
     this._toolboxContainer = document.createElement("div");
@@ -61,6 +68,14 @@ export class AnnotationEditor extends HTMLElement {
     // <button class="btn btn-primary">Button</button>`;
 
     this.shadowRoot?.appendChild(this._mainContainer);
+  }
+
+  private addMarkerArea() {
+    if (this.targetImage && this._markerArea === undefined) {
+      this._markerArea = new MarkerArea();
+      this._markerArea.targetImage = this.targetImage;
+      this._markerAreaContainer?.appendChild(this._markerArea);
+    }
   }
 }
 
