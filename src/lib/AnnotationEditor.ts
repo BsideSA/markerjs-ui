@@ -1,19 +1,29 @@
+import styles from "./lib.css?inline";
+
 export class AnnotationEditor extends HTMLElement {
   private _mainContainer?: HTMLDivElement;
 
   constructor() {
     super();
 
+    this.addStyles = this.addStyles.bind(this);
     this.createLayout = this.createLayout.bind(this);
 
     this.attachShadow({ mode: "open" });
   }
 
   connectedCallback() {
+    this.addStyles();
     this.createLayout();
   }
 
   disconnectedCallback() {}
+
+  private addStyles() {
+    const style = document.createElement("style");
+    style.textContent = styles;
+    this.shadowRoot?.appendChild(style);
+  }
 
   private createLayout() {
     this._mainContainer = document.createElement("div");
@@ -23,7 +33,7 @@ export class AnnotationEditor extends HTMLElement {
     this._mainContainer.style.display = "flex";
 
     // tmp
-    this._mainContainer.innerHTML = "<p>Hello World!</p>";
+    this._mainContainer.innerHTML = `<p class="text-3xl">Hello World!</p>`;
 
     this.shadowRoot?.appendChild(this._mainContainer);
   }
