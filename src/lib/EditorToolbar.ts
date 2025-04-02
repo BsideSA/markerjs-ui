@@ -5,10 +5,9 @@ import PointerIcon from "@/assets/icons/pointer.svg?raw";
 import DeleteIcon from "@/assets/icons/trash.svg?raw";
 import OkIcon from "@/assets/icons/check.svg?raw";
 import CloseIcon from "@/assets/icons/x.svg?raw";
+import { BaseToolbar } from "./BaseToolbar";
 
-export class EditorToolbar {
-  private _markerArea: MarkerArea;
-
+export class EditorToolbar extends BaseToolbar {
   private _toolbarContainer?: HTMLDivElement;
   private _leftActionContainer?: HTMLDivElement;
   private _rightActionContainer?: HTMLDivElement;
@@ -20,7 +19,7 @@ export class EditorToolbar {
   private _closeButton?: HTMLButtonElement;
 
   constructor(markerArea: MarkerArea) {
-    this._markerArea = markerArea;
+    super(markerArea);
 
     this.getUI = this.getUI.bind(this);
     this.createActionButton = this.createActionButton.bind(this);
@@ -62,26 +61,20 @@ export class EditorToolbar {
     return this._toolbarContainer;
   }
 
-  private createActionButton(
+  protected createActionButton(
     title: string,
     action: ToolbarAction,
     icon: string
   ) {
-    const button = document.createElement("button");
-    button.title = title;
-    button.setAttribute("aria-label", title);
-    button.className = "btn btn-square btn-ghost base-content";
-    button.innerHTML = icon;
-    button.addEventListener("click", () => {
-      this.handleActionButtonClick(action);
-    });
-
-    return button;
+    return super.createActionButton(
+      title,
+      action,
+      icon,
+      this.handleActionButtonClick
+    );
   }
 
   private handleActionButtonClick(action: ToolbarAction) {
-    console.log(`Action: ${action}`);
-
     switch (action) {
       case "select": {
         this._markerArea.switchToSelectMode();
