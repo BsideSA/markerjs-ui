@@ -20,5 +20,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["test/manual"]
+  "include": ["test/manual", "src/lib"]
 }
