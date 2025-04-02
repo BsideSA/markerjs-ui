@@ -1,4 +1,4 @@
-import { MarkerArea } from "@markerjs/markerjs3";
+import { AnnotationState, MarkerArea } from "@markerjs/markerjs3";
 import styles from "./lib.css?inline";
 import { EditorToolbar } from "./EditorToolbar";
 
@@ -46,17 +46,19 @@ export class AnnotationEditor extends HTMLElement {
   private createLayout() {
     this._mainContainer = document.createElement("div");
     this._mainContainer.id = "mainContainer";
+    // this._mainContainer.setAttribute("data-theme", "dark");
     this._mainContainer.className =
-      "grid grid-rows-[auto_1fr_auto] w-full h-full";
+      "grid grid-rows-[auto_1fr_auto] w-full h-full bg-base-200 overflow-hidden rounded-md";
 
     this._toolbarContainer = document.createElement("div");
     this._toolbarContainer.id = "toolbarContainer";
+    this._toolbarContainer.className = "bg-base-200";
 
     this._mainContainer.appendChild(this._toolbarContainer);
 
     this._markerAreaContainer = document.createElement("div");
     this._markerAreaContainer.id = "markerAreaContainer";
-    this._markerAreaContainer.className = "flex overflow-hidden bg-slate-50";
+    this._markerAreaContainer.className = "flex overflow-hidden bg-base-100";
 
     this._mainContainer.appendChild(this._markerAreaContainer);
 
@@ -83,9 +85,19 @@ export class AnnotationEditor extends HTMLElement {
   }
 
   private addToolbar() {
-    if (this._toolbar === undefined && this._toolbarContainer) {
-      this._toolbar = new EditorToolbar();
+    if (
+      this._toolbar === undefined &&
+      this._toolbarContainer &&
+      this._markerArea
+    ) {
+      this._toolbar = new EditorToolbar(this._markerArea);
       this._toolbarContainer.appendChild(this._toolbar.getUI());
+    }
+  }
+
+  public restoreState(state: AnnotationState) {
+    if (this._markerArea) {
+      this._markerArea.restoreState(state);
     }
   }
 }
