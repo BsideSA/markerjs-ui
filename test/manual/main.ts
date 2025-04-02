@@ -1,7 +1,6 @@
 import "./style.css";
+import { AnnotationEditor } from "./../../src/lib/index";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <h1>marker.js UI manual testing</h1>
-  </div>
-`;
+const editor = new AnnotationEditor();
+
+document.querySelector<HTMLDivElement>("#app")!.appendChild(editor);
