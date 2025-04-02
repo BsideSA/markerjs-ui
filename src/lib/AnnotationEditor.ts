@@ -33,7 +33,8 @@ export class AnnotationEditor extends HTMLElement {
     this._mainContainer.style.display = "flex";
 
     // tmp
-    this._mainContainer.innerHTML = `<p class="text-3xl">Hello World!</p>`;
+    this._mainContainer.innerHTML = `<p class="text-3xl hover:text-red-400">Hello World!</p>
+    <button class="btn btn-primary">Button</button>`;
 
     this.shadowRoot?.appendChild(this._mainContainer);
   }

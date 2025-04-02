@@ -15,6 +15,9 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1
     devDependencies:
+      daisyui:
+        specifier: ^5.0.11
+        version: 5.0.11
       typescript:
         specifier: ~5.7.2
         version: 5.7.3
@@ -507,6 +510,9 @@ packages:
 
   confbox@0.2.1:
     resolution: {integrity: sha512-hkT3yDPFbs95mNCy1+7qNKC6Pro+/ibzYxtM2iqEigpf0sVw+bg4Zh9/snjsBcf990vfIsg5+1U7VyiyBb3etg==}
+
+  daisyui@5.0.11:
+    resolution: {integrity: sha512-u4pElhLTif8B0w/X1nNoUk+tK4nbFL46tq3QgwvwYAg3M8Rmw9pBasV5L5RddiPGjUeDCY1bHKe+eDwrkLdhmg==}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -1240,6 +1246,8 @@ snapshots:
   confbox@0.1.8: {}
 
   confbox@0.2.1: {}
+
+  daisyui@5.0.11: {}
 
   de-indent@1.0.2: {}
 

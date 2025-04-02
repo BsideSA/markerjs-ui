@@ -1,1 +1,7 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  root: "#mainContainer";
+}
+
+/* workaround for 2-in-1 Windows devices */
+@custom-variant hover (&:hover);
