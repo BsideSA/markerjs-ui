@@ -52,13 +52,13 @@ export class AnnotationEditor extends HTMLElement {
 
     this._toolbarContainer = document.createElement("div");
     this._toolbarContainer.id = "toolbarContainer";
-    this._toolbarContainer.className = "bg-base-200";
+    this._toolbarContainer.className = "bg-base-100";
 
     this._mainContainer.appendChild(this._toolbarContainer);
 
     this._markerAreaContainer = document.createElement("div");
     this._markerAreaContainer.id = "markerAreaContainer";
-    this._markerAreaContainer.className = "flex overflow-hidden bg-base-100";
+    this._markerAreaContainer.className = "flex overflow-hidden bg-base-200";
 
     this._mainContainer.appendChild(this._markerAreaContainer);
 

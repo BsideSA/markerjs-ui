@@ -24,10 +24,4 @@ export type MarkerTypeGroup = {
   markerTypes: MarkerTypeItem[];
 };
 
-export type MarkerTypeList = Array<MarkerTypeGroup | MarkerTypeItem>;
-
-export function isMarkerTypeGroup(
-  item: MarkerTypeGroup | MarkerTypeItem
-): item is MarkerTypeGroup {
-  return "name" in item && "markerTypes" in item;
-}
+export type MarkerTypeList = Array<MarkerTypeGroup>;
