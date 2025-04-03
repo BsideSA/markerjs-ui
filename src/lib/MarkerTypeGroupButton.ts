@@ -28,7 +28,8 @@ export class MarkerTypeGroupButton {
     this._currentTypeButton = document.createElement("div");
     this._currentTypeButton.role = "button";
     this._currentTypeButton.tabIndex = 0;
-    this._currentTypeButton.className = "btn btn-square join-item btn-ghost";
+    this._currentTypeButton.className =
+      "btn btn-square join-item btn-ghost btn-sm base-content p-1.5";
 
     this.setCurrentType(this._markerTypeGroup.markerTypes[0], true);
     this._currentTypeButton.addEventListener("click", () => {
@@ -49,7 +50,8 @@ export class MarkerTypeGroupButton {
     groupButton.appendChild(dropDown);
 
     const dropDownTriggerButton = document.createElement("summary");
-    dropDownTriggerButton.className = "btn btn-ghost join-item p-0";
+    dropDownTriggerButton.className =
+      "btn btn-ghost btn-sm join-item p-0 base-content";
     dropDownTriggerButton.innerHTML = ChevronDownIcon;
     dropDown.appendChild(dropDownTriggerButton);
 

@@ -24,7 +24,7 @@ export class BaseToolbar {
     const button = document.createElement("button");
     button.title = title;
     button.setAttribute("aria-label", title);
-    button.className = "btn btn-square btn-ghost base-content";
+    button.className = "btn btn-square btn-ghost base-content btn-sm p-1.5";
     button.innerHTML = icon;
     if (actionHandler) {
       button.addEventListener("click", () => {

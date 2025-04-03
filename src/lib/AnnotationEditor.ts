@@ -1,6 +1,7 @@
 import { AnnotationState, MarkerArea } from "@markerjs/markerjs3";
 import styles from "./lib.css?inline";
 import { EditorToolbar } from "./EditorToolbar";
+import { EditorToolbox } from "./EditorToolbox";
 
 export class AnnotationEditor extends HTMLElement {
   private _mainContainer?: HTMLDivElement;
@@ -14,6 +15,7 @@ export class AnnotationEditor extends HTMLElement {
   }
 
   private _toolbar?: EditorToolbar;
+  private _toolbox?: EditorToolbox;
 
   public targetImage?: HTMLImageElement;
 
@@ -24,6 +26,7 @@ export class AnnotationEditor extends HTMLElement {
     this.createLayout = this.createLayout.bind(this);
     this.addMarkerArea = this.addMarkerArea.bind(this);
     this.addToolbar = this.addToolbar.bind(this);
+    this.addToolbox = this.addToolbox.bind(this);
 
     this.attachShadow({ mode: "open" });
   }
@@ -33,6 +36,7 @@ export class AnnotationEditor extends HTMLElement {
     this.createLayout();
     this.addMarkerArea();
     this.addToolbar();
+    this.addToolbox();
   }
 
   disconnectedCallback() {}
@@ -64,8 +68,7 @@ export class AnnotationEditor extends HTMLElement {
 
     this._toolboxContainer = document.createElement("div");
     this._toolboxContainer.id = "toolboxContainer";
-
-    this._toolboxContainer.innerHTML = `<p>toolbox</p>`;
+    this._toolboxContainer.className = "bg-base-100";
 
     this._mainContainer.appendChild(this._toolboxContainer);
 
@@ -92,6 +95,17 @@ export class AnnotationEditor extends HTMLElement {
     ) {
       this._toolbar = new EditorToolbar(this._markerArea);
       this._toolbarContainer.appendChild(this._toolbar.getUI());
+    }
+  }
+
+  private addToolbox() {
+    if (
+      this._toolbox === undefined &&
+      this._toolboxContainer &&
+      this._markerArea
+    ) {
+      this._toolbox = new EditorToolbox(this._markerArea);
+      this._toolboxContainer.appendChild(this._toolbox.getUI());
     }
   }
 
