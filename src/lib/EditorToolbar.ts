@@ -158,11 +158,24 @@ const markerTypes: MarkerTypeList = [
   },
 ];
 
+const flatMarkerTypes: MarkerTypeList = [
+  {
+    name: "All markers",
+    markerTypes: markerTypes.reduce(
+      (acc: MarkerTypeItem[], group: MarkerTypeGroup) => {
+        return acc.concat(group.markerTypes);
+      },
+      []
+    ),
+  },
+];
+
 export class EditorToolbar extends BaseToolbar {
   private _toolbarContainer?: HTMLDivElement;
   private _leftActionContainer?: HTMLDivElement;
   private _rightActionContainer?: HTMLDivElement;
   private _markerTypeContainer?: HTMLDivElement;
+  private _markerTypeMiniContainer?: HTMLDivElement;
 
   private _selectButton?: HTMLButtonElement;
   private _deleteButton?: HTMLButtonElement;
@@ -203,6 +216,11 @@ export class EditorToolbar extends BaseToolbar {
         "hidden @xl:inline-flex space-x-1 items-center";
       this._toolbarContainer.appendChild(this._markerTypeContainer);
 
+      this._markerTypeMiniContainer = document.createElement("div");
+      this._markerTypeMiniContainer.className =
+        "inline-flex @xl:hidden space-x-1 items-center";
+      this._toolbarContainer.appendChild(this._markerTypeMiniContainer);
+
       this._rightActionContainer = document.createElement("div");
       this._rightActionContainer.className =
         "inline-flex space-x-1 p-1 border-1 border-transparent";
@@ -229,6 +247,11 @@ export class EditorToolbar extends BaseToolbar {
         this._markerTypeButtons.push(mtgButton);
         this._markerTypeContainer?.appendChild(mtgButton.getUI());
       });
+
+      const miniMtgButton = new MarkerTypeGroupButton(flatMarkerTypes[0], true);
+      miniMtgButton.onTypeButtonClick = this.handleMarkerTypeButtonClick;
+      this._markerTypeButtons.push(miniMtgButton);
+      this._markerTypeMiniContainer?.appendChild(miniMtgButton.getUI());
 
       this._okButton = this.createActionButton("OK", "save", OkIcon);
       this._rightActionContainer.appendChild(this._okButton);

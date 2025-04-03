@@ -6,12 +6,14 @@ export class MarkerTypeGroupButton {
   private _markerTypeGroup: MarkerTypeGroup;
   private _currentMarkerType: MarkerTypeItem;
   private _currentTypeButton?: HTMLDivElement;
+  private _isWide: boolean;
 
   public onTypeButtonClick?: (markerType: MarkerTypeItem) => void;
 
-  constructor(markerTypeGroup: MarkerTypeGroup) {
+  constructor(markerTypeGroup: MarkerTypeGroup, isWide: boolean = false) {
     this._markerTypeGroup = markerTypeGroup;
     this._currentMarkerType = markerTypeGroup.markerTypes[0];
+    this._isWide = isWide;
 
     this.getUI = this.getUI.bind(this);
     this.setCurrentType = this.setCurrentType.bind(this);
@@ -38,7 +40,12 @@ export class MarkerTypeGroupButton {
     groupButton.appendChild(this._currentTypeButton);
 
     const dropDown = document.createElement("details");
-    dropDown.className = "dropdown dropdown-bottom dropdown-end join-item";
+    dropDown.className = "dropdown dropdown-bottom join-item";
+    if (this._isWide) {
+      dropDown.classList.add("dropdown-center");
+    } else {
+      dropDown.classList.add("dropdown-end");
+    }
     groupButton.appendChild(dropDown);
 
     const dropDownTriggerButton = document.createElement("summary");
@@ -48,7 +55,12 @@ export class MarkerTypeGroupButton {
 
     const dropDownContent = document.createElement("div");
     dropDownContent.className =
-      "dropdown-content bg-base-100 rounded-box z-1 w-24 p-2 -mr-2 shadow-lg";
+      "dropdown-content bg-base-100 rounded-box z-1 p-2 mt-2 border-2 border-solid border-base-200 shadow-lg";
+    if (this._isWide) {
+      dropDownContent.classList.add("w-66", "mr-2");
+    } else {
+      dropDownContent.classList.add("w-26", "-mr-2");
+    }
     dropDown.appendChild(dropDownContent);
 
     this._markerTypeGroup.markerTypes.forEach((markerType) => {
