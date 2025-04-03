@@ -1,12 +1,16 @@
-import { MarkerTypeGroup } from "./models/toolbar";
+import { MarkerTypeGroup, MarkerTypeItem } from "./models/toolbar";
 
 import ChevronDownIcon from "@/assets/icons/chevron-down.svg?raw";
 
 export class MarkerTypeGroupButton {
   private _markerTypeGroup: MarkerTypeGroup;
+  private _currentMarkerType: MarkerTypeItem;
+
+  public onTypeButtonClick?: (markerType: MarkerTypeItem) => void;
 
   constructor(markerTypeGroup: MarkerTypeGroup) {
     this._markerTypeGroup = markerTypeGroup;
+    this._currentMarkerType = markerTypeGroup.markerTypes[0];
 
     this.getUI = this.getUI.bind(this);
   }
@@ -31,6 +35,11 @@ export class MarkerTypeGroupButton {
       "data-marker-type",
       this._markerTypeGroup.markerTypes[0].markerType.typeName
     );
+    currentTypeButton.addEventListener("click", () => {
+      if (this.onTypeButtonClick) {
+        this.onTypeButtonClick(this._currentMarkerType);
+      }
+    });
 
     groupButton.appendChild(currentTypeButton);
 
@@ -60,7 +69,13 @@ export class MarkerTypeGroupButton {
         currentTypeButton.setAttribute("aria-label", markerType.name);
         currentTypeButton.classList.add("btn-active");
 
+        this._currentMarkerType = markerType;
+
         dropDown.removeAttribute("open");
+
+        if (this.onTypeButtonClick) {
+          this.onTypeButtonClick(this._currentMarkerType);
+        }
       });
 
       dropDownContent.appendChild(markerTypeButton);

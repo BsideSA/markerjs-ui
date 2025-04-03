@@ -1,5 +1,6 @@
 import {
   MarkerTypeGroup,
+  MarkerTypeItem,
   MarkerTypeList,
   ToolbarAction,
 } from "./models/toolbar";
@@ -48,6 +49,7 @@ import {
   Renderer,
   TextMarker,
   HighlighterMarker,
+  MarkerBase,
 } from "@markerjs/markerjs3";
 
 import { BaseToolbar } from "./BaseToolbar";
@@ -174,6 +176,8 @@ export class EditorToolbar extends BaseToolbar {
     this.getUI = this.getUI.bind(this);
     this.createActionButton = this.createActionButton.bind(this);
     this.handleActionButtonClick = this.handleActionButtonClick.bind(this);
+    this.handleMarkerTypeButtonClick =
+      this.handleMarkerTypeButtonClick.bind(this);
   }
 
   public getUI() {
@@ -212,6 +216,7 @@ export class EditorToolbar extends BaseToolbar {
     // markers
     markerTypes.forEach((markerTypeGroup) => {
       const mtgButton = new MarkerTypeGroupButton(markerTypeGroup);
+      mtgButton.onTypeButtonClick = this.handleMarkerTypeButtonClick;
       this._markerTypeContainer?.appendChild(mtgButton.getUI());
     });
 
@@ -246,6 +251,14 @@ export class EditorToolbar extends BaseToolbar {
         this._markerArea.deleteSelectedMarkers();
         break;
       }
+    }
+  }
+
+  private handleMarkerTypeButtonClick(markerType: MarkerTypeItem) {
+    const markerEditor = this._markerArea.createMarker(markerType.markerType);
+    if (markerEditor && markerEditor.marker instanceof CustomImageMarker) {
+      markerEditor.marker.defaultSize = { width: 32, height: 32 };
+      markerEditor.marker.svgString = markerType.icon;
     }
   }
 }
