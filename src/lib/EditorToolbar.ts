@@ -52,6 +52,7 @@ import {
 
 import { BaseToolbar } from "./BaseToolbar";
 import { emojis } from "./models/emojis";
+import { MarkerTypeGroupButton } from "./MarkerTypeGroupButton";
 
 const markerTypes: MarkerTypeList = [
   {
@@ -173,8 +174,6 @@ export class EditorToolbar extends BaseToolbar {
     this.getUI = this.getUI.bind(this);
     this.createActionButton = this.createActionButton.bind(this);
     this.handleActionButtonClick = this.handleActionButtonClick.bind(this);
-    this.createMarkerTypeGroupButton =
-      this.createMarkerTypeGroupButton.bind(this);
   }
 
   public getUI() {
@@ -212,8 +211,8 @@ export class EditorToolbar extends BaseToolbar {
 
     // markers
     markerTypes.forEach((markerTypeGroup) => {
-      const mtgButton = this.createMarkerTypeGroupButton(markerTypeGroup);
-      this._markerTypeContainer?.appendChild(mtgButton);
+      const mtgButton = new MarkerTypeGroupButton(markerTypeGroup);
+      this._markerTypeContainer?.appendChild(mtgButton.getUI());
     });
 
     this._okButton = this.createActionButton("OK", "save", OkIcon);
@@ -248,50 +247,5 @@ export class EditorToolbar extends BaseToolbar {
         break;
       }
     }
-  }
-
-  private createMarkerTypeGroupButton(
-    markerTypeGroup: MarkerTypeGroup
-  ): HTMLDivElement {
-    const groupButton = document.createElement("div");
-    groupButton.className =
-      "join p-1 border-1 border-solid border-transparent rounded-md hover:border-base-300";
-    groupButton.setAttribute("aria-label", markerTypeGroup.name);
-
-    const currentTypeButton = document.createElement("div");
-    currentTypeButton.role = "button";
-    currentTypeButton.tabIndex = 0;
-    currentTypeButton.className = "btn btn-square join-item btn-ghost";
-    currentTypeButton.innerHTML = markerTypeGroup.markerTypes[0].icon;
-
-    groupButton.appendChild(currentTypeButton);
-
-    const dropDown = document.createElement("div");
-    dropDown.className = "dropdown dropdown-bottom dropdown-end join-item";
-    groupButton.appendChild(dropDown);
-
-    const dropDownTriggerButton = document.createElement("div");
-    dropDownTriggerButton.role = "button";
-    dropDownTriggerButton.tabIndex = 0;
-    dropDownTriggerButton.className = "btn btn-ghost join-item p-0";
-    dropDownTriggerButton.innerHTML = ChevronDownIcon;
-    dropDown.appendChild(dropDownTriggerButton);
-
-    const dropDownContent = document.createElement("div");
-    dropDownContent.className =
-      "dropdown-content bg-base-100 rounded-box z-1 w-24 p-2 -mr-2 shadow";
-    dropDown.appendChild(dropDownContent);
-
-    markerTypeGroup.markerTypes.forEach((markerType) => {
-      const markerTypeButton = document.createElement("button");
-      markerTypeButton.title = markerType.name;
-      markerTypeButton.setAttribute("aria-label", markerType.name);
-      markerTypeButton.className = "btn btn-square btn-ghost base-content";
-      markerTypeButton.innerHTML = markerType.icon;
-
-      dropDownContent.appendChild(markerTypeButton);
-    });
-
-    return groupButton;
   }
 }
