@@ -172,6 +172,8 @@ export class EditorToolbar extends BaseToolbar {
   private _okButton?: HTMLButtonElement;
   private _closeButton?: HTMLButtonElement;
 
+  private _mode: "select" | "create" | "rendering" = "select";
+
   constructor(markerArea: MarkerArea) {
     super(markerArea);
 
@@ -180,55 +182,80 @@ export class EditorToolbar extends BaseToolbar {
     this.handleActionButtonClick = this.handleActionButtonClick.bind(this);
     this.handleMarkerTypeButtonClick =
       this.handleMarkerTypeButtonClick.bind(this);
+    this.updateToolbarButtons = this.updateToolbarButtons.bind(this);
+    this.updateMarkerTypeButtons = this.updateMarkerTypeButtons.bind(this);
   }
 
   public getUI() {
-    this._toolbarContainer = document.createElement("div");
-    this._toolbarContainer.className = "flex space-x-1 p-2 justify-between";
+    if (this._toolbarContainer === undefined) {
+      this.attachMarkerAreaEvents();
+      this._toolbarContainer = document.createElement("div");
+      this._toolbarContainer.className = "flex space-x-1 p-2 justify-between";
 
-    this._leftActionContainer = document.createElement("div");
-    this._leftActionContainer.className =
-      "inline-flex space-x-1 p-1 border-1 border-transparent";
-    this._toolbarContainer.appendChild(this._leftActionContainer);
+      this._leftActionContainer = document.createElement("div");
+      this._leftActionContainer.className =
+        "inline-flex space-x-1 p-1 border-1 border-transparent";
+      this._toolbarContainer.appendChild(this._leftActionContainer);
 
-    this._markerTypeContainer = document.createElement("div");
-    this._markerTypeContainer.className =
-      "hidden sm:inline-flex space-x-1 items-center";
-    this._toolbarContainer.appendChild(this._markerTypeContainer);
+      this._markerTypeContainer = document.createElement("div");
+      this._markerTypeContainer.className =
+        "hidden sm:inline-flex space-x-1 items-center";
+      this._toolbarContainer.appendChild(this._markerTypeContainer);
 
-    this._rightActionContainer = document.createElement("div");
-    this._rightActionContainer.className =
-      "inline-flex space-x-1 p-1 border-1 border-transparent";
-    this._toolbarContainer.appendChild(this._rightActionContainer);
+      this._rightActionContainer = document.createElement("div");
+      this._rightActionContainer.className =
+        "inline-flex space-x-1 p-1 border-1 border-transparent";
+      this._toolbarContainer.appendChild(this._rightActionContainer);
 
-    this._selectButton = this.createActionButton(
-      "Select",
-      "select",
-      PointerIcon
-    );
-    this._leftActionContainer.appendChild(this._selectButton);
+      this._selectButton = this.createActionButton(
+        "Select",
+        "select",
+        PointerIcon
+      );
+      this._leftActionContainer.appendChild(this._selectButton);
 
-    this._deleteButton = this.createActionButton(
-      "Delete",
-      "delete",
-      DeleteIcon
-    );
-    this._leftActionContainer.appendChild(this._deleteButton);
+      this._deleteButton = this.createActionButton(
+        "Delete",
+        "delete",
+        DeleteIcon
+      );
+      this._leftActionContainer.appendChild(this._deleteButton);
 
-    // markers
-    markerTypes.forEach((markerTypeGroup) => {
-      const mtgButton = new MarkerTypeGroupButton(markerTypeGroup);
-      mtgButton.onTypeButtonClick = this.handleMarkerTypeButtonClick;
-      this._markerTypeButtons.push(mtgButton);
-      this._markerTypeContainer?.appendChild(mtgButton.getUI());
-    });
+      // markers
+      markerTypes.forEach((markerTypeGroup) => {
+        const mtgButton = new MarkerTypeGroupButton(markerTypeGroup);
+        mtgButton.onTypeButtonClick = this.handleMarkerTypeButtonClick;
+        this._markerTypeButtons.push(mtgButton);
+        this._markerTypeContainer?.appendChild(mtgButton.getUI());
+      });
 
-    this._okButton = this.createActionButton("OK", "save", OkIcon);
-    this._rightActionContainer.appendChild(this._okButton);
-    this._closeButton = this.createActionButton("Close", "close", CloseIcon);
-    this._rightActionContainer.appendChild(this._closeButton);
+      this._okButton = this.createActionButton("OK", "save", OkIcon);
+      this._rightActionContainer.appendChild(this._okButton);
+      this._closeButton = this.createActionButton("Close", "close", CloseIcon);
+      this._rightActionContainer.appendChild(this._closeButton);
+    }
+
+    this.updateToolbarButtons();
 
     return this._toolbarContainer;
+  }
+
+  private attachMarkerAreaEvents() {
+    this._markerArea.addEventListener("markerselect", () => {
+      this.updateToolbarButtons();
+    });
+    this._markerArea.addEventListener("markerdeselect", () => {
+      this.updateToolbarButtons();
+    });
+    this._markerArea.addEventListener("markercreate", (ev) => {
+      if (
+        ev.detail.markerEditor.state !== "new" &&
+        ev.detail.markerEditor.state !== "creating"
+      ) {
+        this._mode = "select";
+      }
+      this.updateToolbarButtons();
+    });
   }
 
   protected createActionButton(
@@ -247,25 +274,48 @@ export class EditorToolbar extends BaseToolbar {
   private handleActionButtonClick(action: ToolbarAction) {
     switch (action) {
       case "select": {
+        this._mode = "select";
         this._markerArea.switchToSelectMode();
+        this.updateToolbarButtons();
         break;
       }
       case "delete": {
         this._markerArea.deleteSelectedMarkers();
+        this.updateToolbarButtons();
         break;
       }
     }
   }
 
   private handleMarkerTypeButtonClick(markerType: MarkerTypeItem) {
-    this._markerTypeButtons.forEach((mtgButton) => {
-      mtgButton.setCurrentType(markerType);
-    });
+    this._mode = "create";
+    this.updateMarkerTypeButtons(markerType);
 
     const markerEditor = this._markerArea.createMarker(markerType.markerType);
     if (markerEditor && markerEditor.marker instanceof CustomImageMarker) {
       markerEditor.marker.defaultSize = { width: 32, height: 32 };
       markerEditor.marker.svgString = markerType.icon;
     }
+  }
+
+  private updateToolbarButtons() {
+    if (this._mode === "select") {
+      this._selectButton?.classList.add("btn-active");
+      if (this._markerArea.selectedMarkerEditors.length > 0) {
+        this._deleteButton?.classList.remove("btn-disabled");
+      } else {
+        this._deleteButton?.classList.add("btn-disabled");
+      }
+      this.updateMarkerTypeButtons();
+    }
+  }
+
+  private updateMarkerTypeButtons(markerType?: MarkerTypeItem) {
+    if (this._mode === "create") {
+      this._selectButton?.classList.remove("btn-active");
+    }
+    this._markerTypeButtons.forEach((mtgButton) => {
+      mtgButton.setCurrentType(markerType);
+    });
   }
 }
