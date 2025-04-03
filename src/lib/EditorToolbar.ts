@@ -190,7 +190,8 @@ export class EditorToolbar extends BaseToolbar {
     if (this._toolbarContainer === undefined) {
       this.attachMarkerAreaEvents();
       this._toolbarContainer = document.createElement("div");
-      this._toolbarContainer.className = "flex space-x-1 p-2 justify-between";
+      this._toolbarContainer.className =
+        "flex space-x-1 p-2 justify-between @container";
 
       this._leftActionContainer = document.createElement("div");
       this._leftActionContainer.className =
@@ -199,7 +200,7 @@ export class EditorToolbar extends BaseToolbar {
 
       this._markerTypeContainer = document.createElement("div");
       this._markerTypeContainer.className =
-        "hidden sm:inline-flex space-x-1 items-center";
+        "hidden @xl:inline-flex space-x-1 items-center";
       this._toolbarContainer.appendChild(this._markerTypeContainer);
 
       this._rightActionContainer = document.createElement("div");
