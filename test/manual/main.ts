@@ -8,7 +8,14 @@ targetImage.src = sampleImage;
 
 const editor = new AnnotationEditor();
 editor.targetImage = targetImage;
+//editor.theme = "dark";
 
 document.querySelector<HTMLDivElement>("#app")!.appendChild(editor);
+
+document
+  .querySelector<HTMLButtonElement>("#toggleTheme")!
+  .addEventListener("click", () => {
+    editor.theme = editor.theme === "light" ? "dark" : "light";
+  });
 
 editor.restoreState(sampleAnnotation);

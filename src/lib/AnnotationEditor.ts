@@ -19,6 +19,17 @@ export class AnnotationEditor extends HTMLElement {
 
   public targetImage?: HTMLImageElement;
 
+  private _theme: "light" | "dark" = "light";
+  public get theme() {
+    return this._theme;
+  }
+  public set theme(value: "light" | "dark") {
+    this._theme = value;
+    if (this._mainContainer) {
+      this._mainContainer.setAttribute("data-theme", value);
+    }
+  }
+
   constructor() {
     super();
 
@@ -50,7 +61,7 @@ export class AnnotationEditor extends HTMLElement {
   private createLayout() {
     this._mainContainer = document.createElement("div");
     this._mainContainer.id = "mainContainer";
-    // this._mainContainer.setAttribute("data-theme", "dark");
+    this._mainContainer.setAttribute("data-theme", this._theme);
     this._mainContainer.className =
       "grid grid-rows-[auto_1fr_auto] w-full h-full bg-base-200 overflow-hidden rounded-md";
 
