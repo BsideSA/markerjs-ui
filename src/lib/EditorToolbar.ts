@@ -167,6 +167,8 @@ export class EditorToolbar extends BaseToolbar {
   private _selectButton?: HTMLButtonElement;
   private _deleteButton?: HTMLButtonElement;
 
+  private _markerTypeButtons: MarkerTypeGroupButton[] = [];
+
   private _okButton?: HTMLButtonElement;
   private _closeButton?: HTMLButtonElement;
 
@@ -217,6 +219,7 @@ export class EditorToolbar extends BaseToolbar {
     markerTypes.forEach((markerTypeGroup) => {
       const mtgButton = new MarkerTypeGroupButton(markerTypeGroup);
       mtgButton.onTypeButtonClick = this.handleMarkerTypeButtonClick;
+      this._markerTypeButtons.push(mtgButton);
       this._markerTypeContainer?.appendChild(mtgButton.getUI());
     });
 
@@ -255,6 +258,10 @@ export class EditorToolbar extends BaseToolbar {
   }
 
   private handleMarkerTypeButtonClick(markerType: MarkerTypeItem) {
+    this._markerTypeButtons.forEach((mtgButton) => {
+      mtgButton.setCurrentType(markerType);
+    });
+
     const markerEditor = this._markerArea.createMarker(markerType.markerType);
     if (markerEditor && markerEditor.marker instanceof CustomImageMarker) {
       markerEditor.marker.defaultSize = { width: 32, height: 32 };

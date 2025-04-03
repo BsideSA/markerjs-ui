@@ -5,6 +5,7 @@ import ChevronDownIcon from "@/assets/icons/chevron-down.svg?raw";
 export class MarkerTypeGroupButton {
   private _markerTypeGroup: MarkerTypeGroup;
   private _currentMarkerType: MarkerTypeItem;
+  private _currentTypeButton?: HTMLDivElement;
 
   public onTypeButtonClick?: (markerType: MarkerTypeItem) => void;
 
@@ -13,6 +14,7 @@ export class MarkerTypeGroupButton {
     this._currentMarkerType = markerTypeGroup.markerTypes[0];
 
     this.getUI = this.getUI.bind(this);
+    this.setCurrentType = this.setCurrentType.bind(this);
   }
 
   public getUI(): HTMLDivElement {
@@ -21,27 +23,19 @@ export class MarkerTypeGroupButton {
       "join p-1 border-1 border-solid border-transparent rounded-md hover:border-base-300";
     groupButton.setAttribute("aria-label", this._markerTypeGroup.name);
 
-    const currentTypeButton = document.createElement("div");
-    currentTypeButton.role = "button";
-    currentTypeButton.tabIndex = 0;
-    currentTypeButton.className = "btn btn-square join-item btn-ghost";
-    currentTypeButton.innerHTML = this._markerTypeGroup.markerTypes[0].icon;
-    currentTypeButton.title = this._markerTypeGroup.markerTypes[0].name;
-    currentTypeButton.setAttribute(
-      "aria-label",
-      this._markerTypeGroup.markerTypes[0].name
-    );
-    currentTypeButton.setAttribute(
-      "data-marker-type",
-      this._markerTypeGroup.markerTypes[0].markerType.typeName
-    );
-    currentTypeButton.addEventListener("click", () => {
+    this._currentTypeButton = document.createElement("div");
+    this._currentTypeButton.role = "button";
+    this._currentTypeButton.tabIndex = 0;
+    this._currentTypeButton.className = "btn btn-square join-item btn-ghost";
+
+    this.setCurrentType(this._markerTypeGroup.markerTypes[0], true);
+    this._currentTypeButton.addEventListener("click", () => {
       if (this.onTypeButtonClick) {
         this.onTypeButtonClick(this._currentMarkerType);
       }
     });
 
-    groupButton.appendChild(currentTypeButton);
+    groupButton.appendChild(this._currentTypeButton);
 
     const dropDown = document.createElement("details");
     dropDown.className = "dropdown dropdown-bottom dropdown-end join-item";
@@ -64,10 +58,7 @@ export class MarkerTypeGroupButton {
       markerTypeButton.className = "btn btn-square btn-ghost base-content";
       markerTypeButton.innerHTML = markerType.icon;
       markerTypeButton.addEventListener("click", () => {
-        currentTypeButton.innerHTML = markerType.icon;
-        currentTypeButton.title = markerType.name;
-        currentTypeButton.setAttribute("aria-label", markerType.name);
-        currentTypeButton.classList.add("btn-active");
+        this.setCurrentType(markerType);
 
         this._currentMarkerType = markerType;
 
@@ -82,5 +73,29 @@ export class MarkerTypeGroupButton {
     });
 
     return groupButton;
+  }
+
+  public setCurrentType(markerType?: MarkerTypeItem, suppressActive = false) {
+    if (this._currentTypeButton) {
+      if (
+        markerType &&
+        this._markerTypeGroup.markerTypes.indexOf(markerType) > -1
+      ) {
+        this._currentMarkerType = markerType;
+        this._currentTypeButton.innerHTML = markerType.icon;
+        this._currentTypeButton.title = markerType.name;
+        this._currentTypeButton.setAttribute("aria-label", markerType.name);
+        this._currentTypeButton.setAttribute(
+          "data-marker-type",
+          markerType.markerType.typeName
+        );
+
+        if (!suppressActive) {
+          this._currentTypeButton.classList.add("btn-active");
+        }
+      } else {
+        this._currentTypeButton.classList.remove("btn-active");
+      }
+    }
   }
 }
