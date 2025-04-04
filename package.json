@@ -15,7 +15,7 @@
     "vite-plugin-dts": "^4.5.3"
   },
   "dependencies": {
-    "@markerjs/markerjs3": "^3.5.1",
+    "@markerjs/markerjs3": "^3.5.2",
     "@tailwindcss/vite": "^4.1.1",
     "tailwindcss": "^4.1.1"
   }
