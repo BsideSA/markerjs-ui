@@ -199,6 +199,12 @@ export class EditorToolbar extends BaseToolbar {
       this._toolbarContainer.className =
         "flex space-x-1 p-2 justify-between @container";
 
+      // workaround for emoji rendering when the first instance is hidden
+      const emojiDefsHelper = document.createElement("div");
+      emojiDefsHelper.className = "absolute w-0 h-0 overflow-hidden";
+      emojiDefsHelper.innerHTML = emojis.map((emoji) => emoji.icon).join("");
+      this._toolbarContainer.appendChild(emojiDefsHelper);
+
       this._leftActionContainer = document.createElement("div");
       this._leftActionContainer.className =
         "inline-flex space-x-1 p-1 border-1 border-transparent";
