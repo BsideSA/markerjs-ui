@@ -10,9 +10,6 @@ import DeleteIcon from "@/assets/icons/trash.svg?raw";
 import OkIcon from "@/assets/icons/check.svg?raw";
 import CloseIcon from "@/assets/icons/x.svg?raw";
 
-import ChevronDownIcon from "@/assets/icons/chevron-down.svg?raw";
-import AddIcon from "@/assets/icons/square-plus.svg?raw";
-
 import FrameIcon from "@/assets/icons/markers/rectangle.svg?raw";
 import CoverIcon from "@/assets/icons/markers/rectangle-filled.svg?raw";
 import EllipseFrameIcon from "@/assets/icons/markers/oval-vertical.svg?raw";
@@ -29,7 +26,6 @@ import FreehandIcon from "@/assets/icons/markers/scribble.svg?raw";
 import PolygonIcon from "@/assets/icons/markers/polygon.svg?raw";
 
 import {
-  AnnotationState,
   ArrowMarker,
   CalloutMarker,
   CaptionFrameMarker,
@@ -43,13 +39,10 @@ import {
   HighlightMarker,
   LineMarker,
   MarkerArea,
-  MarkerBaseEditor,
   MeasurementMarker,
   PolygonMarker,
-  Renderer,
   TextMarker,
   HighlighterMarker,
-  MarkerBase,
 } from "@markerjs/markerjs3";
 
 import { BaseToolbar } from "./BaseToolbar";
