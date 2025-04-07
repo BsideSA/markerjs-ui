@@ -8,12 +8,14 @@ import ZoomInIcon from "@/assets/icons/plus.svg?raw";
 import ZoomOutIcon from "@/assets/icons/minus.svg?raw";
 import ZoomResetIcon from "@/assets/icons/relation-one-to-one.svg?raw";
 
-import NotesIcon from "@/assets/icons/notes.svg?raw";
+import FillIcon from "@/assets/icons/droplet-half-2.svg?raw";
 import OpacityIcon from "@/assets/icons/circle-half-2.svg?raw";
+import NotesIcon from "@/assets/icons/notes.svg?raw";
 
 import { NotesToolboxPanel } from "./NotesToolboxPanel";
 import { ToolboxPanel } from "./ToolboxPanel";
 import { OpacityToolboxPanel } from "./OpacityToolboxPanel";
+import { FillToolboxPanel } from "./FillToolboxPanel";
 
 export class EditorToolbox extends BaseToolbar {
   private _toolbarContainer?: HTMLDivElement;
@@ -99,6 +101,13 @@ export class EditorToolbox extends BaseToolbar {
       zoomGroup.appendChild(this._zoomInButton);
 
       // property panels
+      const fillPanel = new FillToolboxPanel(
+        this._markerArea,
+        "Fill",
+        FillIcon
+      );
+      this._propertyPanels.push(fillPanel);
+
       const opacityPanel = new OpacityToolboxPanel(
         this._markerArea,
         "Opacity",
