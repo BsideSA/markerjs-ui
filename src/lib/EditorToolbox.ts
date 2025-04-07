@@ -9,8 +9,11 @@ import ZoomOutIcon from "@/assets/icons/minus.svg?raw";
 import ZoomResetIcon from "@/assets/icons/relation-one-to-one.svg?raw";
 
 import NotesIcon from "@/assets/icons/notes.svg?raw";
+import OpacityIcon from "@/assets/icons/circle-half-2.svg?raw";
+
 import { NotesToolboxPanel } from "./NotesToolboxPanel";
 import { ToolboxPanel } from "./ToolboxPanel";
+import { OpacityToolboxPanel } from "./OpacityToolboxPanel";
 
 export class EditorToolbox extends BaseToolbar {
   private _toolbarContainer?: HTMLDivElement;
@@ -96,6 +99,13 @@ export class EditorToolbox extends BaseToolbar {
       zoomGroup.appendChild(this._zoomInButton);
 
       // property panels
+      const opacityPanel = new OpacityToolboxPanel(
+        this._markerArea,
+        "Opacity",
+        OpacityIcon
+      );
+      this._propertyPanels.push(opacityPanel);
+
       const notesPanel = new NotesToolboxPanel(
         this._markerArea,
         "Notes",
