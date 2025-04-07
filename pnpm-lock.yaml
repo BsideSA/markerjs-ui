@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@markerjs/markerjs3':
-        specifier: ^3.5.2
-        version: 3.5.2
+        specifier: ^3.5.3
+        version: 3.5.3
       '@tailwindcss/vite':
         specifier: ^4.1.1
         version: 4.1.1(vite@6.2.4(jiti@2.4.2)(lightningcss@1.29.2))
@@ -203,8 +203,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
 
-  '@markerjs/markerjs3@3.5.2':
-    resolution: {integrity: sha512-8m4SYd/P0tnqYnwg8ahEmnENL+BYa78r3ympjhedXoiVt1dAyaWeq1v9ewkFhCXjwG8uvzOocSmg6uiBIz2JeQ==}
+  '@markerjs/markerjs3@3.5.3':
+    resolution: {integrity: sha512-sC43FGiO5SmAd7qwkLpIEBbJabypgsBs3DfMuuULOV1LqJ86OzlZIhsVlfDFA1c7a6fP7SRWR9eTs1CV3C9I+A==}
 
   '@microsoft/api-extractor-model@7.30.5':
     resolution: {integrity: sha512-0ic4rcbcDZHz833RaTZWTGu+NpNgrxVNjVaor0ZDUymfDFzjA/Uuk8hYziIUIOEOSTfmIQqyzVwlzxZxPe7tOA==}
@@ -961,7 +961,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
-  '@markerjs/markerjs3@3.5.2': {}
+  '@markerjs/markerjs3@3.5.3': {}
 
   '@microsoft/api-extractor-model@7.30.5':
     dependencies:
