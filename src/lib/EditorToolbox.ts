@@ -8,9 +8,14 @@ import ZoomInIcon from "@/assets/icons/plus.svg?raw";
 import ZoomOutIcon from "@/assets/icons/minus.svg?raw";
 import ZoomResetIcon from "@/assets/icons/relation-one-to-one.svg?raw";
 
+import NotesIcon from "@/assets/icons/notes.svg?raw";
+import { NotesToolboxPanel } from "./NotesToolboxPanel";
+import { ToolboxPanel } from "./ToolboxPanel";
+
 export class EditorToolbox extends BaseToolbar {
   private _toolbarContainer?: HTMLDivElement;
   private _leftActionContainer?: HTMLDivElement;
+  private _propertyPanelContainer?: HTMLDivElement;
   private _rightActionContainer?: HTMLDivElement;
 
   private _undoButton?: HTMLButtonElement;
@@ -20,6 +25,8 @@ export class EditorToolbox extends BaseToolbar {
   private _zoomOutButton?: HTMLButtonElement;
   private _zoomResetButton?: HTMLButtonElement;
 
+  private _propertyPanels: ToolboxPanel[] = [];
+
   constructor(markerArea: MarkerArea) {
     super(markerArea);
 
@@ -27,6 +34,9 @@ export class EditorToolbox extends BaseToolbar {
     this.createActionButton = this.createActionButton.bind(this);
     this.handleActionButtonClick = this.handleActionButtonClick.bind(this);
     this.updateToolbarButtons = this.updateToolbarButtons.bind(this);
+    this.updatePanelVisibility = this.updatePanelVisibility.bind(this);
+    this.updatePanelContent = this.updatePanelContent.bind(this);
+    this.applyPanelValues = this.applyPanelValues.bind(this);
   }
 
   public getUI() {
@@ -40,6 +50,11 @@ export class EditorToolbox extends BaseToolbar {
       this._leftActionContainer.className =
         "inline-flex space-x-1 p-1 border-1 border-transparent";
       this._toolbarContainer.appendChild(this._leftActionContainer);
+
+      this._propertyPanelContainer = document.createElement("div");
+      this._propertyPanelContainer.className =
+        "inline-flex space-x-1 items-center";
+      this._toolbarContainer.appendChild(this._propertyPanelContainer);
 
       this._rightActionContainer = document.createElement("div");
       this._rightActionContainer.className =
@@ -79,7 +94,29 @@ export class EditorToolbox extends BaseToolbar {
       );
       this._zoomInButton.classList.add("join-item");
       zoomGroup.appendChild(this._zoomInButton);
+
+      // property panels
+      const notesPanel = new NotesToolboxPanel(
+        this._markerArea,
+        "Notes",
+        NotesIcon
+      );
+      this._propertyPanels.push(notesPanel);
+
+      this._propertyPanels.forEach((panel) => {
+        this._propertyPanelContainer?.appendChild(panel.getUI());
+      });
     }
+
+    this._markerArea.addEventListener("markerselect", () => {
+      this.updatePanelVisibility();
+      this.updatePanelContent();
+    });
+    this._markerArea.addEventListener("markerdeselect", () => {
+      this.applyPanelValues();
+      this.updatePanelVisibility();
+    });
+
     this.updateToolbarButtons();
 
     return this._toolbarContainer;
@@ -147,5 +184,23 @@ export class EditorToolbox extends BaseToolbar {
         !this._markerArea.isRedoPossible
       );
     }
+  }
+
+  private updatePanelVisibility() {
+    this._propertyPanels.forEach((panel) => {
+      panel.updateVisibility();
+    });
+  }
+
+  private updatePanelContent() {
+    this._propertyPanels.forEach((panel) => {
+      panel.updateContent();
+    });
+  }
+
+  private applyPanelValues() {
+    this._propertyPanels.forEach((panel) => {
+      panel.applyValues();
+    });
   }
 }
