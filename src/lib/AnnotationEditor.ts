@@ -38,6 +38,10 @@ export class AnnotationEditor extends HTMLElement {
     this.addMarkerArea = this.addMarkerArea.bind(this);
     this.addToolbar = this.addToolbar.bind(this);
     this.addToolbox = this.addToolbox.bind(this);
+    this.attachEvents = this.attachEvents.bind(this);
+    this.restoreState = this.restoreState.bind(this);
+
+    this.closeOpenDropdowns = this.closeOpenDropdowns.bind(this);
 
     this.attachShadow({ mode: "open" });
   }
@@ -48,6 +52,7 @@ export class AnnotationEditor extends HTMLElement {
     this.addMarkerArea();
     this.addToolbar();
     this.addToolbox();
+    this.attachEvents();
   }
 
   disconnectedCallback() {}
@@ -120,10 +125,35 @@ export class AnnotationEditor extends HTMLElement {
     }
   }
 
+  private attachEvents() {
+    this._mainContainer?.addEventListener("click", (event) => {
+      let dropDownTarget: HTMLDetailsElement | null = null;
+
+      if (event.target instanceof Element) {
+        dropDownTarget = event.target?.closest(".dropdown");
+      }
+      if (dropDownTarget instanceof HTMLDetailsElement) {
+        this.closeOpenDropdowns(dropDownTarget);
+      } else {
+        this.closeOpenDropdowns();
+      }
+    });
+  }
+
   public restoreState(state: AnnotationState) {
     if (this._markerArea) {
       this._markerArea.restoreState(state);
     }
+  }
+
+  private closeOpenDropdowns(exception?: HTMLDetailsElement) {
+    const openDropdowns =
+      this._mainContainer?.querySelectorAll(".dropdown[open]");
+    openDropdowns?.forEach((dropdown) => {
+      if (dropdown !== exception) {
+        dropdown.removeAttribute("open");
+      }
+    });
   }
 }
 
