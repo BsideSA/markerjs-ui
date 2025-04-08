@@ -180,6 +180,9 @@ export class EditorToolbar extends BaseToolbar {
 
   private _mode: "select" | "create" | "rendering" = "select";
 
+  public onSaveButtonClick?: () => void;
+  public onCloseButtonClick?: () => void;
+
   constructor(markerArea: MarkerArea) {
     super(markerArea);
 
@@ -305,6 +308,18 @@ export class EditorToolbar extends BaseToolbar {
       case "delete": {
         this._markerArea.deleteSelectedMarkers();
         this.updateToolbarButtons();
+        break;
+      }
+      case "save": {
+        if (this.onSaveButtonClick) {
+          this.onSaveButtonClick();
+        }
+        break;
+      }
+      case "close": {
+        if (this.onCloseButtonClick) {
+          this.onCloseButtonClick();
+        }
         break;
       }
     }

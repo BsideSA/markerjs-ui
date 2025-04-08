@@ -1,7 +1,22 @@
-import { AnnotationState, MarkerArea } from "@markerjs/markerjs3";
+import { AnnotationState, MarkerArea, Renderer } from "@markerjs/markerjs3";
 import styles from "./lib.css?inline";
 import { EditorToolbar } from "./EditorToolbar";
 import { EditorToolbox } from "./EditorToolbox";
+
+export interface AnnotationEditorEventMap {
+  editorclose: CustomEvent<AnnotationEditorEventData>;
+  editorsave: CustomEvent<AnnotationEditorRenderEventData>;
+}
+
+export interface AnnotationEditorEventData {
+  annotationEditor: AnnotationEditor;
+}
+
+export interface AnnotationEditorRenderEventData
+  extends AnnotationEditorEventData {
+  state: AnnotationState;
+  dataUrl?: string;
+}
 
 export class AnnotationEditor extends HTMLElement {
   private _mainContainer?: HTMLDivElement;
@@ -40,6 +55,8 @@ export class AnnotationEditor extends HTMLElement {
     this.addToolbox = this.addToolbox.bind(this);
     this.attachEvents = this.attachEvents.bind(this);
     this.restoreState = this.restoreState.bind(this);
+    this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
+    this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
 
     this.closeOpenDropdowns = this.closeOpenDropdowns.bind(this);
 
@@ -110,8 +127,36 @@ export class AnnotationEditor extends HTMLElement {
       this._markerArea
     ) {
       this._toolbar = new EditorToolbar(this._markerArea);
+      this._toolbar.onSaveButtonClick = this.handleSaveButtonClick;
+      this._toolbar.onCloseButtonClick = this.handleCloseButtonClick;
       this._toolbarContainer.appendChild(this._toolbar.getUI());
     }
+  }
+
+  private async handleSaveButtonClick() {
+    if (this._markerArea) {
+      const state = this._markerArea.getState();
+
+      const renderer = new Renderer();
+      renderer.targetImage = this.targetImage;
+      renderer.naturalSize = true;
+      renderer.imageType = "image/png";
+      const renderedImage = await renderer.rasterize(state);
+
+      this.dispatchEvent(
+        new CustomEvent<AnnotationEditorRenderEventData>("editorsave", {
+          detail: { annotationEditor: this, state, dataUrl: renderedImage },
+        })
+      );
+    }
+  }
+
+  private handleCloseButtonClick() {
+    this.dispatchEvent(
+      new CustomEvent<AnnotationEditorEventData>("editorclose", {
+        detail: { annotationEditor: this },
+      })
+    );
   }
 
   private addToolbox() {
@@ -154,6 +199,52 @@ export class AnnotationEditor extends HTMLElement {
         dropdown.removeAttribute("open");
       }
     });
+  }
+
+  addEventListener<T extends keyof AnnotationEditorEventMap>(
+    // the event name, a key of AnnotationEditorEventMap
+    type: T,
+
+    // the listener, using a value of AnnotationEditorEventMap
+    listener: (this: AnnotationEditor, ev: AnnotationEditorEventMap[T]) => void,
+
+    // any options
+    options?: boolean | AddEventListenerOptions
+  ): void;
+  addEventListener<K extends keyof HTMLElementEventMap>(
+    type: K,
+    listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions | undefined
+  ): void;
+  addEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions | undefined
+  ): void {
+    super.addEventListener(type, listener, options);
+  }
+
+  removeEventListener<T extends keyof AnnotationEditorEventMap>(
+    // the event name, a key of AnnotationEditorEventMap
+    type: T,
+
+    // the listener, using a value of AnnotationEditorEventMap
+    listener: (this: AnnotationEditor, ev: AnnotationEditorEventMap[T]) => void,
+
+    // any options
+    options?: boolean | EventListenerOptions
+  ): void;
+  removeEventListener<K extends keyof HTMLElementEventMap>(
+    type: K,
+    listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => void,
+    options?: boolean | EventListenerOptions | undefined
+  ): void;
+  removeEventListener(
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | EventListenerOptions | undefined
+  ): void {
+    super.removeEventListener(type, listener, options);
   }
 }
 

@@ -10,6 +10,22 @@ const editor = new AnnotationEditor();
 editor.targetImage = targetImage;
 //editor.theme = "dark";
 
+editor.addEventListener("editorsave", (event) => {
+  console.log("Editor state:", event.detail.state);
+  const dataUrl = event.detail.dataUrl;
+  if (dataUrl) {
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = "annotation.png";
+    link.click();
+  }
+});
+editor.addEventListener("editorclose", () => {
+  document.querySelector<HTMLDivElement>("#app")!.removeChild(editor);
+
+  console.log("Editor closed");
+});
+
 document.querySelector<HTMLDivElement>("#app")!.appendChild(editor);
 
 document
