@@ -1,12 +1,7 @@
-import { MarkerArea } from "@markerjs/markerjs3";
 import { ToolbarAction } from "./models/toolbar";
 
 export class BaseToolbar {
-  protected _markerArea: MarkerArea;
-
-  constructor(markerArea: MarkerArea) {
-    this._markerArea = markerArea;
-
+  constructor() {
     this.getUI = this.getUI.bind(this);
     this.createActionButton = this.createActionButton.bind(this);
   }

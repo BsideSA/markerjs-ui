@@ -183,8 +183,12 @@ export class EditorToolbar extends BaseToolbar {
   public onSaveButtonClick?: () => void;
   public onCloseButtonClick?: () => void;
 
+  protected _markerArea: MarkerArea;
+
   constructor(markerArea: MarkerArea) {
-    super(markerArea);
+    super();
+
+    this._markerArea = markerArea;
 
     this.getUI = this.getUI.bind(this);
     this.createActionButton = this.createActionButton.bind(this);
