@@ -22,12 +22,15 @@ h1 {
   line-height: 1.1;
 }
 
-#app {
+.mjs {
   max-width: 1280px;
-  height: 800px;
+  height: 40vh;
   margin: 1rem auto;
-  padding: 2rem;
+  padding: 1rem;
   background-color: antiquewhite;
+}
+.mjs:nth-of-type(even) {
+  background-color: lightblue;
 }
 
 @media (prefers-color-scheme: light) {

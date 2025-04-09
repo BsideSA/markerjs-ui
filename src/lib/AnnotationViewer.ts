@@ -1,0 +1,133 @@
+import { AnnotationState, MarkerView } from "@markerjs/markerjs3";
+import styles from "./lib.css?inline";
+import { ViewerToolbar } from "./ViewerToolbar";
+
+export class AnnotationViewer extends HTMLElement {
+  private _mainContainer?: HTMLDivElement;
+  private _toolbarContainer?: HTMLDivElement;
+  private _markerViewContainer?: HTMLDivElement;
+
+  private _markerView?: MarkerView;
+  public get markerView() {
+    return this._markerView;
+  }
+
+  private _toolbar?: ViewerToolbar;
+
+  public targetImage?: HTMLImageElement;
+
+  private _theme: "light" | "dark" = "light";
+  public get theme() {
+    return this._theme;
+  }
+  public set theme(value: "light" | "dark") {
+    this._theme = value;
+    if (this._mainContainer) {
+      this._mainContainer.setAttribute("data-theme", value);
+    }
+  }
+
+  constructor() {
+    super();
+
+    this.addStyles = this.addStyles.bind(this);
+    this.createLayout = this.createLayout.bind(this);
+    this.addMarkerArea = this.addMarkerArea.bind(this);
+    this.addToolbar = this.addToolbar.bind(this);
+
+    this.closeOpenDropdowns = this.closeOpenDropdowns.bind(this);
+
+    this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.addStyles();
+    this.createLayout();
+    this.addMarkerArea();
+    this.addToolbar();
+  }
+
+  disconnectedCallback() {}
+
+  private addStyles() {
+    const style = document.createElement("style");
+    style.textContent = styles;
+    this.shadowRoot?.appendChild(style);
+  }
+
+  private createLayout() {
+    this._mainContainer = document.createElement("div");
+    this._mainContainer.id = "mainContainer";
+    this._mainContainer.setAttribute("data-theme", this._theme);
+    this._mainContainer.className =
+      "flex relative w-full h-full bg-base-200 overflow-hidden rounded-md";
+
+    this._markerViewContainer = document.createElement("div");
+    this._markerViewContainer.id = "markerViewContainer";
+    this._markerViewContainer.className =
+      "flex overflow-hidden w-full h-full bg-base-200";
+
+    this._mainContainer.appendChild(this._markerViewContainer);
+
+    const outerToolbarContainer = document.createElement("div");
+    outerToolbarContainer.id = "toolbarContainer";
+    outerToolbarContainer.className =
+      "absolute bottom-5 flex items-center justify-end -mx-5 w-full bg-transparent pointer-events-none";
+
+    this._toolbarContainer = document.createElement("div");
+    this._toolbarContainer.className =
+      "inline-flex pointer-events-auto bg-base-100/40 hover:bg-base-100/90 rounded-md shadow-2xs";
+
+    outerToolbarContainer.appendChild(this._toolbarContainer);
+    this._mainContainer.appendChild(outerToolbarContainer);
+
+    this.shadowRoot?.appendChild(this._mainContainer);
+  }
+
+  private addMarkerArea() {
+    if (
+      this.targetImage &&
+      this._markerViewContainer &&
+      this._markerView === undefined
+    ) {
+      this._markerView = new MarkerView();
+      this._markerView.targetImage = this.targetImage;
+      this._markerViewContainer.appendChild(this._markerView);
+    }
+  }
+
+  private addToolbar() {
+    if (
+      this._toolbar === undefined &&
+      this._toolbarContainer &&
+      this._markerView
+    ) {
+      this._toolbar = new ViewerToolbar(this._markerView);
+      this._toolbarContainer.appendChild(this._toolbar.getUI());
+    }
+  }
+
+  public show(state: AnnotationState) {
+    if (this._markerView) {
+      this._markerView.show(state);
+    }
+  }
+
+  private closeOpenDropdowns(exception?: HTMLDetailsElement) {
+    const openDropdowns =
+      this._mainContainer?.querySelectorAll(".dropdown[open]");
+    openDropdowns?.forEach((dropdown) => {
+      if (dropdown !== exception) {
+        dropdown.removeAttribute("open");
+      }
+    });
+  }
+}
+
+if (
+  window &&
+  window.customElements &&
+  window.customElements.get("mjsui-annotation-viewer") === undefined
+) {
+  window.customElements.define("mjsui-annotation-viewer", AnnotationViewer);
+}
