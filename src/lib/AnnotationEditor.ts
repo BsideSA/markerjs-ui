@@ -168,7 +168,7 @@ export class AnnotationEditor extends HTMLElement {
 
     this._toolbarContainer = document.createElement("div");
     this._toolbarContainer.id = "toolbarContainer";
-    this._toolbarContainer.className = "bg-base-100";
+    this._toolbarContainer.className = "bg-base-100 z-10";
 
     this._mainContainer.appendChild(this._toolbarContainer);
 
