@@ -1,6 +1,8 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
+import pkg from "./package.json" assert { type: "json" };
+import generatePackageJson from "rollup-plugin-generate-package-json";
 import dts from "vite-plugin-dts";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -30,6 +32,18 @@ export default defineConfig({
           "@markerjs/markerjs3": "markerjs3",
         },
       },
+      plugins: [
+        generatePackageJson({
+          baseContents: (pkg) => {
+            pkg.main = "./markerjs-ui.umd.cjs";
+            pkg.module = "./markerjs-ui.js";
+            pkg.types = "./markerjs-ui.d.ts";
+            pkg.scripts = {};
+            pkg.devDependencies = {};
+            return pkg;
+          },
+        }),
+      ],
     },
   },
   plugins: [
