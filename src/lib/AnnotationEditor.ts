@@ -3,21 +3,81 @@ import styles from "./lib.css?inline";
 import { EditorToolbar } from "./EditorToolbar";
 import { EditorToolbox } from "./EditorToolbox";
 
+/**
+ * Annotation editor custom event types.
+ */
 export interface AnnotationEditorEventMap {
+  /**
+   * Close button clicked.
+   */
   editorclose: CustomEvent<AnnotationEditorEventData>;
+  /**
+   * Save button clicked.
+   */
   editorsave: CustomEvent<AnnotationEditorRenderEventData>;
 }
 
+/**
+ * Annotation editor custom event data.
+ */
 export interface AnnotationEditorEventData {
+  /**
+   * The annotation editor instance.
+   */
   annotationEditor: AnnotationEditor;
 }
 
+/**
+ * Annotation editor custom event data for the render/save event.
+ */
 export interface AnnotationEditorRenderEventData
   extends AnnotationEditorEventData {
+  /**
+   * The annotation state.
+   */
   state: AnnotationState;
+  /**
+   * The rendered image data URL.
+   */
   dataUrl?: string;
 }
 
+/**
+ * AnnotationEditor is a web component that, as the name suggests, allows users to annotate images easily.
+ *
+ * It's a UI wrapper for marker.js 3 `MarkerArea` component.
+ *
+ * @group Components
+ *
+ * @example
+ *
+ * ```js
+ * import { AnnotationEditor } from "@markerjs/markerjs3-ui";
+ *
+ * // image to annotate
+ * const targetImage = document.createElement("img");
+ * targetImage.src = "image.jpg";
+ *
+ * // create the editor
+ * const editor = new AnnotationEditor();
+ * editor.targetImage = targetImage;
+ * containerDiv.appendChild(editor);
+ *
+ * // handle save event
+ * editor.addEventListener("editorsave", (event) => {
+ * console.log("Editor state:", event.detail.state);
+ * const dataUrl = event.detail.dataUrl;
+ *
+ * // download the rasterized image
+ * if (dataUrl) {
+ *   const link = document.createElement("a");
+ *   link.href = dataUrl;
+ *   link.download = "annotation.png";
+ *   link.click();
+ * }
+ * });
+ * ```
+ */
 export class AnnotationEditor extends HTMLElement {
   private _mainContainer?: HTMLDivElement;
   private _toolbarContainer?: HTMLDivElement;
@@ -25,6 +85,10 @@ export class AnnotationEditor extends HTMLElement {
   private _markerAreaContainer?: HTMLDivElement;
 
   private _markerArea?: MarkerArea;
+  /**
+   * The underlying `MarkerArea` component.
+   * This is the main component that handles the annotation functionality.
+   */
   public get markerArea() {
     return this._markerArea;
   }
@@ -32,12 +96,27 @@ export class AnnotationEditor extends HTMLElement {
   private _toolbar?: EditorToolbar;
   private _toolbox?: EditorToolbox;
 
+  /**
+   * The target image to annotate.
+   */
   public targetImage?: HTMLImageElement;
 
   private _theme: "light" | "dark" = "light";
+  /**
+   * The theme of the editor.
+   * Can be either "light" or "dark".
+   *
+   * The default is "light".
+   */
   public get theme() {
     return this._theme;
   }
+  /**
+   * Set the theme of the editor.
+   * Can be either "light" or "dark".
+   *
+   * The default is "light".
+   */
   public set theme(value: "light" | "dark") {
     this._theme = value;
     if (this._mainContainer) {
@@ -185,6 +264,11 @@ export class AnnotationEditor extends HTMLElement {
     });
   }
 
+  /**
+   * Loads a previously saved annotation into the editor.
+   *
+   * @param state The state to restore.
+   */
   public restoreState(state: AnnotationState) {
     if (this._markerArea) {
       this._markerArea.restoreState(state);
