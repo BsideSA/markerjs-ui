@@ -5,6 +5,7 @@ import pkg from "./package.json" assert { type: "json" };
 import generatePackageJson from "rollup-plugin-generate-package-json";
 import dts from "vite-plugin-dts";
 import tailwindcss from "@tailwindcss/vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -53,5 +54,21 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
     tailwindcss(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: "README.md",
+          dest: "./",
+        },
+        {
+          src: "LICENSE",
+          dest: "./",
+        },
+        {
+          src: "CHANGELOG.md",
+          dest: "./",
+        },
+      ],
+    }),
   ],
 });
