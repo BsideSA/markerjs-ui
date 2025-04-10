@@ -31,9 +31,9 @@ export class ColorPicker {
       button.setAttribute("data-color", color);
 
       if (color !== "transparent") {
-        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="${color}" stroke-width="2" stroke="currentColor" d="M0,0 H24 V24 H0 Z" /></svg>`;
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="${color}" stroke-width="2" stroke="currentColor" d="M0,0 H24 V24 H0 Z" /></svg>`;
       } else {
-        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="${color}" stroke-width={2} stroke="currentColor" d="M0,0 H24 V24 H0 Z" /><path fill="currentColor" opacity="0.2" stroke-width="0" d="M0,0 H12 V12 H0 Z" /><path fill="currentColor" opacity="0.2" stroke-width="0" d="M12,12 H24 V24 H12 Z" /></svg>`;
+        button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="${color}" stroke-width={2} stroke="currentColor" d="M0,0 H24 V24 H0 Z" /><path fill="currentColor" opacity="0.2" stroke-width="0" d="M0,0 H12 V12 H0 Z" /><path fill="currentColor" opacity="0.2" stroke-width="0" d="M12,12 H24 V24 H12 Z" /></svg>`;
       }
 
       button.addEventListener("click", (event) => {
