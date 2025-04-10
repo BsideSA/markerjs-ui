@@ -7,7 +7,7 @@ export class ToolboxPanel {
 
   protected _panel?: HTMLDetailsElement;
 
-  protected width = "w-26";
+  protected panelClasses = ["w-26"];
 
   constructor(markerArea: MarkerArea, title: string, icon: string) {
     this._markerArea = markerArea;
@@ -41,7 +41,7 @@ export class ToolboxPanel {
     const panelContent = document.createElement("div");
     panelContent.className =
       "dropdown-content bg-base-100 rounded-box z-1 p-2 mt-2 border-2 border-solid border-base-200 shadow-lg";
-    panelContent.classList.add(this.width);
+    panelContent.classList.add(...this.panelClasses);
     this._panel.appendChild(panelContent);
 
     panelContent.appendChild(this.getContentUI());

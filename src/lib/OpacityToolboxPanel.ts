@@ -7,7 +7,7 @@ export class OpacityToolboxPanel extends ToolboxPanel {
 
   constructor(markerArea: MarkerArea, title: string, icon: string) {
     super(markerArea, title, icon);
-    this.width = "w-48";
+    this.panelClasses = ["w-48"];
   }
 
   protected override getContentUI() {

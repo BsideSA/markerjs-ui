@@ -23,7 +23,7 @@ export class StrokeToolboxPanel extends ToolboxPanel {
 
   constructor(markerArea: MarkerArea, title: string, icon: string) {
     super(markerArea, title, icon);
-    this.width = "w-54";
+    this.panelClasses = ["w-54", "-mr-8", "sm:mr-0"];
 
     this.getStrokeStyleVisual = this.getStrokeStyleVisual.bind(this);
     this.handleStrokeStyleClick = this.handleStrokeStyleClick.bind(this);

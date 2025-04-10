@@ -7,7 +7,7 @@ export class NotesToolboxPanel extends ToolboxPanel {
 
   constructor(markerArea: MarkerArea, title: string, icon: string) {
     super(markerArea, title, icon);
-    this.width = "w-64";
+    this.panelClasses = ["w-64", "mr-8", "sm:mr-0"];
   }
 
   protected override getContentUI() {

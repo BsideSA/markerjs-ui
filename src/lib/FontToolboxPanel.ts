@@ -14,7 +14,7 @@ export class FontToolboxPanel extends ToolboxPanel {
 
   constructor(markerArea: MarkerArea, title: string, icon: string) {
     super(markerArea, title, icon);
-    this.width = "w-54";
+    this.panelClasses = ["w-54", "-mr-10", "sm:mr-0"];
 
     this.updateButtonStates = this.updateButtonStates.bind(this);
   }

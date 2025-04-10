@@ -18,7 +18,7 @@ export class FillToolboxPanel extends ToolboxPanel {
 
   constructor(markerArea: MarkerArea, title: string, icon: string) {
     super(markerArea, title, icon);
-    this.width = "w-54";
+    this.panelClasses = ["w-54"];
   }
 
   protected override getContentUI() {
