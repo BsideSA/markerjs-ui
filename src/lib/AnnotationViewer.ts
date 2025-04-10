@@ -67,8 +67,6 @@ export class AnnotationViewer extends HTMLElement {
     this.addMarkerArea = this.addMarkerArea.bind(this);
     this.addToolbar = this.addToolbar.bind(this);
 
-    this.closeOpenDropdowns = this.closeOpenDropdowns.bind(this);
-
     this.attachShadow({ mode: "open" });
   }
 
@@ -148,16 +146,6 @@ export class AnnotationViewer extends HTMLElement {
     if (this._markerView) {
       this._markerView.show(state);
     }
-  }
-
-  private closeOpenDropdowns(exception?: HTMLDetailsElement) {
-    const openDropdowns =
-      this._mainContainer?.querySelectorAll(".dropdown[open]");
-    openDropdowns?.forEach((dropdown) => {
-      if (dropdown !== exception) {
-        dropdown.removeAttribute("open");
-      }
-    });
   }
 }
 
