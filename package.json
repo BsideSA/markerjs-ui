@@ -7,7 +7,7 @@
   "description": "marker.js UI is a simple and lightweight UI for marker.js, a library for creating image annotations.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ailon/markerjs-ui"
+    "url": "git+https://github.com/ailon/markerjs-ui.git"
   },
   "keywords": [
     "image",
