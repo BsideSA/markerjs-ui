@@ -12,10 +12,10 @@ The choice is quite simple:
 ## Installation
 
 ```bash
-npm install @markerjs/markerjs3 @markerjs/markerjs3-ui
+npm install @markerjs/markerjs3 @markerjs/markerjs-ui
 ```
 
-Note that you need to install both `@markerjs/markerjs3` and `@markerjs/markerjs3-ui` to use marker.js UI.
+Note that you need to install both `@markerjs/markerjs3` and `@markerjs/markerjs-ui` to use marker.js UI.
 
 The library includes TypeScript type definitions out of the box.
 
@@ -36,7 +36,7 @@ containerDiv.appendChild(editor);
 Obviously, you'd need to import the `AnnotationEditor` class from the library first:
 
 ```js
-import { AnnotationEditor } from "@markerjs/markerjs3-ui";
+import { AnnotationEditor } from "@markerjs/markerjs-ui";
 ```
 
 And the `targetImage` in the example above is the image you want to annotate. It is an `HTMLImageElement` that can either be a reference to an image on your page, or you can create a new image element in JavaScript and set its `src` property to the image you want to annotate.

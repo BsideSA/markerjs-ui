@@ -7,7 +7,7 @@ import { ViewerToolbar } from "./ViewerToolbar";
  *
  * @example
  * ```js
- * import { AnnotationViewer } from "@markerjs/markerjs3-ui";
+ * import { AnnotationViewer } from "@markerjs/markerjs-ui";
  *
  * // image to annotate
  * const targetImage = document.createElement("img");

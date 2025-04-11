@@ -52,7 +52,7 @@ export interface AnnotationEditorRenderEventData
  * @example
  *
  * ```js
- * import { AnnotationEditor } from "@markerjs/markerjs3-ui";
+ * import { AnnotationEditor } from "@markerjs/markerjs-ui";
  *
  * // image to annotate
  * const targetImage = document.createElement("img");
