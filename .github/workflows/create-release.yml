@@ -1,0 +1,35 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create Release
+        run: gh release create ${GITHUB_REF#refs/*/} -t ${GITHUB_REF#refs/*/}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get the version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Run a multi-line script
+        run: |
+          yarn install
+          yarn build
+          cd dist && zip -r ../markerjs-ui-${{ steps.get_version.outputs.VERSION }}.zip ./*
+
+      - name: Upload Release Asset
+        run: |
+          gh release upload ${GITHUB_REF#refs/*/} ./markerjs-ui-${{ steps.get_version.outputs.VERSION }}.zip --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
