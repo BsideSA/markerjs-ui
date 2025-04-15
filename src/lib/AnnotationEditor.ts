@@ -75,13 +75,13 @@ export interface AnnotationEditorSettings {
     markersOnly?: boolean;
 
     /**
-     * When set and {@linkcode naturalSize} is `false` sets the width of the rendered image.
+     * When set and `naturalSize` is `false` sets the width of the rendered image.
      *
      * Both `width` and `height` have to be set for this to take effect.
      */
     width?: number;
     /**
-     * When set and {@linkcode naturalSize} is `false` sets the height of the rendered image.
+     * When set and `naturalSize` is `false` sets the height of the rendered image.
      *
      * Both `width` and `height` have to be set for this to take effect.
      */
