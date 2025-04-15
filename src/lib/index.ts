@@ -7,6 +7,7 @@
 
 import {
   AnnotationEditor,
+  AnnotationEditorSettings,
   AnnotationEditorEventData,
   AnnotationEditorRenderEventData,
 } from "./AnnotationEditor";
@@ -14,7 +15,8 @@ import { AnnotationViewer } from "./AnnotationViewer";
 
 export {
   AnnotationEditor,
-  AnnotationViewer,
+  type AnnotationEditorSettings,
   type AnnotationEditorEventData,
   type AnnotationEditorRenderEventData,
+  AnnotationViewer,
 };

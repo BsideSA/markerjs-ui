@@ -9,17 +9,29 @@ targetImage.src = sampleImage;
 const editor = new AnnotationEditor();
 editor.targetImage = targetImage;
 //editor.theme = "dark";
+// editor.settings.renderOnSave = true;
+editor.settings.rendererSettings.markersOnly = true;
+// editor.settings.rendererSettings.imageType = "image/jpeg";
+// editor.settings.rendererSettings.imageQuality = 0.1;
+// editor.settings.rendererSettings.naturalSize = true;
+// editor.settings.rendererSettings.width = 50;
+// editor.settings.rendererSettings.height = 600;
 
 editor.addEventListener("editorsave", (event) => {
   console.log("Editor state:", event.detail.state);
   viewer.show(event.detail.state);
-  // const dataUrl = event.detail.dataUrl;
-  // if (dataUrl) {
-  //   const link = document.createElement("a");
-  //   link.href = dataUrl;
-  //   link.download = "annotation.png";
-  //   link.click();
-  // }
+  const dataUrl = event.detail.dataUrl;
+  if (dataUrl) {
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = `annotation.${
+      editor.settings.rendererSettings.imageType === "image/jpeg"
+        ? "jpg"
+        : "png"
+    }`;
+    link.innerText = "Download";
+    link.click();
+  }
 });
 editor.addEventListener("editorclose", () => {
   document.querySelector<HTMLDivElement>("#editorDiv")!.removeChild(editor);

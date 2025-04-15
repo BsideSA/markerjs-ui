@@ -42,6 +42,53 @@ export interface AnnotationEditorRenderEventData
   dataUrl?: string;
 }
 
+export interface AnnotationEditorSettings {
+  /**
+   * Whether the rasterized image should be rendered on save.
+   * If set to false the `editorsave` event will not contain the `dataUrl` property.
+   */
+  renderOnSave?: boolean;
+  /**
+   * Configuration for the image renderer.
+   * This is used to configure the image rendering settings.
+   */
+  rendererSettings: {
+    /**
+     * Whether the image should be rendered at the original (natural) target image size.
+     */
+    naturalSize?: boolean;
+    /**
+     * Rendered image type (`image/png`, `image/jpeg`, etc.).
+     */
+    imageType?: string;
+    /**
+     * For formats that support it, specifies rendering quality.
+     *
+     * In the case of `image/jpeg` you can specify a value between 0 and 1 (lowest to highest quality).
+     *
+     * @type {number} - image rendering quality (0..1)
+     */
+    imageQuality?: number;
+    /**
+     * When set to true, only the marker layer without the original image will be rendered.
+     */
+    markersOnly?: boolean;
+
+    /**
+     * When set and {@linkcode naturalSize} is `false` sets the width of the rendered image.
+     *
+     * Both `width` and `height` have to be set for this to take effect.
+     */
+    width?: number;
+    /**
+     * When set and {@linkcode naturalSize} is `false` sets the height of the rendered image.
+     *
+     * Both `width` and `height` have to be set for this to take effect.
+     */
+    height?: number;
+  };
+}
+
 /**
  * AnnotationEditor is a web component that, as the name suggests, allows users to annotate images easily.
  *
@@ -122,6 +169,23 @@ export class AnnotationEditor extends HTMLElement {
     if (this._mainContainer) {
       this._mainContainer.setAttribute("data-theme", value);
     }
+  }
+
+  private _settings: AnnotationEditorSettings = {
+    renderOnSave: true,
+    rendererSettings: {
+      naturalSize: false,
+      imageType: "image/png",
+      imageQuality: 1,
+      markersOnly: false,
+    },
+  };
+  /**
+   * The settings for the editor.
+   * This is used to configure the editor behavior.
+   */
+  public get settings() {
+    return this._settings;
   }
 
   constructor() {
@@ -216,11 +280,23 @@ export class AnnotationEditor extends HTMLElement {
     if (this._markerArea) {
       const state = this._markerArea.getState();
 
-      const renderer = new Renderer();
-      renderer.targetImage = this.targetImage;
-      renderer.naturalSize = true;
-      renderer.imageType = "image/png";
-      const renderedImage = await renderer.rasterize(state);
+      let renderedImage: string | undefined;
+
+      if (this.settings.renderOnSave) {
+        const renderer = new Renderer();
+        renderer.targetImage = this.targetImage;
+        renderer.naturalSize =
+          this.settings.rendererSettings?.naturalSize ?? false;
+        renderer.markersOnly =
+          this.settings.rendererSettings?.markersOnly ?? false;
+        renderer.width = this.settings.rendererSettings?.width;
+        renderer.height = this.settings.rendererSettings?.height;
+        renderer.imageType =
+          this.settings.rendererSettings?.imageType ?? "image/png";
+        renderer.imageQuality =
+          this.settings.rendererSettings?.imageQuality ?? 1;
+        renderedImage = await renderer.rasterize(state);
+      }
 
       this.dispatchEvent(
         new CustomEvent<AnnotationEditorRenderEventData>("editorsave", {
