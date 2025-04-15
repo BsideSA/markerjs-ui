@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
   root: "#mainContainer";
-  include: button, dropdown, input, select, textarea, range, join, fieldset;
 }
 
 /* workaround for 2-in-1 Windows devices */
