@@ -1,6 +1,6 @@
-# marker.js UI - "3 lines of code" UI wrapper for marker.js 3
+# marker.js UI - the "3 lines of code" UI wrapper for marker.js 3
 
-marker.js UI is a wrapper for [marker.js 3](https://markerjs.com) bringing a simple UI to the library. It is designed to be easy to integrate image annotation into your projects with minimal custom code needed. It brings back that "3 lines of code" feel to the library that some marker.js 2 users loved.
+marker.js UI is a wrapper for [marker.js 3](https://markerjs.com) bringing a full-fledged editor and viewer UI to the library. It is designed to make it super easy to integrate image annotation into your projects with minimal custom code needed. marker.js UI brings back that "3 lines of code" feel to the library that some marker.js 2 users loved.
 
 ### When to use marker.js UI vs. marker.js 3
 
@@ -103,7 +103,7 @@ You can find marker.js UI reference and tutorials [here](https://markerjs.com/do
 
 marker.js UI is licensed under the [MIT License](LICENSE).
 
-Note that marker.js 3 has its own license, which you can find [here](https://github.com/ailon/markerjs3/blob/master/LICENSE). Alternative licenses are available on marker.js 3's [website](https://markerjs.com/).
+Note that marker.js 3 has its own license, which you can find [here](https://github.com/ailon/markerjs3/blob/master/LICENSE). Alternative licenses are available on [markerjs.com](https://markerjs.com/).
 
 ## Credits
 
