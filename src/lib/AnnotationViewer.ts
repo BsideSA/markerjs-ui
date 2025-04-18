@@ -92,7 +92,7 @@ export class AnnotationViewer extends HTMLElement {
     this._mainContainer.id = "mainContainer";
     this._mainContainer.setAttribute("data-theme", this._theme);
     this._mainContainer.className =
-      "flex relative w-full h-full bg-base-200 overflow-hidden rounded-md";
+      "flex relative w-full h-full bg-base-200 overflow-hidden";
 
     this._markerViewContainer = document.createElement("div");
     this._markerViewContainer.id = "markerViewContainer";

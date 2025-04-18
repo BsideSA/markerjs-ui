@@ -230,7 +230,7 @@ export class AnnotationEditor extends HTMLElement {
     this._mainContainer.id = "mainContainer";
     this._mainContainer.setAttribute("data-theme", this._theme);
     this._mainContainer.className =
-      "grid grid-rows-[auto_1fr_auto] w-full h-full bg-base-200 overflow-hidden rounded-md";
+      "grid grid-rows-[auto_1fr_auto] w-full h-full bg-base-200 overflow-hidden";
 
     this._toolbarContainer = document.createElement("div");
     this._toolbarContainer.id = "toolbarContainer";
