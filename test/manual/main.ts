@@ -38,10 +38,17 @@ editor.addEventListener("editorclose", () => {
 
   console.log("Editor closed");
 });
+editor.markerArea.addEventListener("markercreate", (event) => {
+  console.log("Marker created:", event.detail.markerEditor.marker.typeName);
+});
 
 const viewer = new AnnotationViewer();
 viewer.targetImage = targetImage;
 viewer.theme = "dark";
+
+viewer.markerView.addEventListener("markerover", (event) => {
+  console.log("Marker hovered:", event.detail.marker.typeName);
+});
 
 document.querySelector<HTMLDivElement>("#editorDiv")!.appendChild(editor);
 document.querySelector<HTMLDivElement>("#viewerDiv")!.appendChild(viewer);

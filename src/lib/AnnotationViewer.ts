@@ -25,7 +25,7 @@ export class AnnotationViewer extends HTMLElement {
   private _toolbarContainer?: HTMLDivElement;
   private _markerViewContainer?: HTMLDivElement;
 
-  private _markerView?: MarkerView;
+  private _markerView: MarkerView;
   /**
    * The underlying marker.js 3 `MarkerView` component.
    * This is the component that actually renders the annotations on top of the image.
@@ -62,9 +62,11 @@ export class AnnotationViewer extends HTMLElement {
   constructor() {
     super();
 
+    this._markerView = new MarkerView();
+
     this.addStyles = this.addStyles.bind(this);
     this.createLayout = this.createLayout.bind(this);
-    this.addMarkerArea = this.addMarkerArea.bind(this);
+    this.addMarkerView = this.addMarkerView.bind(this);
     this.addToolbar = this.addToolbar.bind(this);
 
     this.attachShadow({ mode: "open" });
@@ -73,7 +75,7 @@ export class AnnotationViewer extends HTMLElement {
   connectedCallback() {
     this.addStyles();
     this.createLayout();
-    this.addMarkerArea();
+    this.addMarkerView();
     this.addToolbar();
   }
 
@@ -114,13 +116,8 @@ export class AnnotationViewer extends HTMLElement {
     this.shadowRoot?.appendChild(this._mainContainer);
   }
 
-  private addMarkerArea() {
-    if (
-      this.targetImage &&
-      this._markerViewContainer &&
-      this._markerView === undefined
-    ) {
-      this._markerView = new MarkerView();
+  private addMarkerView() {
+    if (this.targetImage && this._markerViewContainer && this._markerView) {
       this._markerView.targetImage = this.targetImage;
       this._markerViewContainer.appendChild(this._markerView);
     }

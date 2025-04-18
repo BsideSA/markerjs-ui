@@ -131,7 +131,7 @@ export class AnnotationEditor extends HTMLElement {
   private _toolboxContainer?: HTMLDivElement;
   private _markerAreaContainer?: HTMLDivElement;
 
-  private _markerArea?: MarkerArea;
+  private _markerArea: MarkerArea;
   /**
    * The underlying `MarkerArea` component.
    * This is the main component that handles the annotation functionality.
@@ -190,6 +190,8 @@ export class AnnotationEditor extends HTMLElement {
 
   constructor() {
     super();
+
+    this._markerArea = new MarkerArea();
 
     this.addStyles = this.addStyles.bind(this);
     this.createLayout = this.createLayout.bind(this);
@@ -252,12 +254,7 @@ export class AnnotationEditor extends HTMLElement {
   }
 
   private addMarkerArea() {
-    if (
-      this.targetImage &&
-      this._markerAreaContainer &&
-      this._markerArea === undefined
-    ) {
-      this._markerArea = new MarkerArea();
+    if (this.targetImage && this._markerAreaContainer && this._markerArea) {
       this._markerArea.targetImage = this.targetImage;
       this._markerAreaContainer.appendChild(this._markerArea);
     }
