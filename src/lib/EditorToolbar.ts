@@ -278,10 +278,7 @@ export class EditorToolbar extends BaseToolbar {
       this.updateToolbarButtons();
     });
     this._markerArea.addEventListener("markercreate", (ev) => {
-      if (
-        ev.detail.markerEditor.state !== "new" &&
-        ev.detail.markerEditor.state !== "creating"
-      ) {
+      if (!ev.detail.markerEditor.continuousCreation) {
         this._mode = "select";
       }
       this.updateToolbarButtons();
