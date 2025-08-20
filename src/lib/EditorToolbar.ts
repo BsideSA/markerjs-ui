@@ -7,13 +7,12 @@ import {
 
 import PointerIcon from "@/assets/icons/pointer.svg?raw";
 import DeleteIcon from "@/assets/icons/trash.svg?raw";
-import OkIcon from "@/assets/icons/check.svg?raw";
-import CloseIcon from "@/assets/icons/x.svg?raw";
 
 import FrameIcon from "@/assets/icons/markers/rectangle.svg?raw";
 import CoverIcon from "@/assets/icons/markers/rectangle-filled.svg?raw";
 import EllipseFrameIcon from "@/assets/icons/markers/oval-vertical.svg?raw";
 import EllipseIcon from "@/assets/icons/markers/oval-vertical-filled.svg?raw";
+import TriangleIcon from "@/assets/icons/markers/triangle.svg?raw";
 import HighlightIcon from "@/assets/icons/markers/highlight.svg?raw";
 import ArrowIcon from "@/assets/icons/markers/arrow-narrow-right.svg?raw";
 import LineIcon from "@/assets/icons/markers/line.svg?raw";
@@ -44,6 +43,7 @@ import {
   TextMarker,
   HighlighterMarker,
 } from "@markerjs/markerjs3";
+import { TriangleMarker } from "./core/TriangleMarker.ts";
 
 import { BaseToolbar } from "./BaseToolbar";
 import { emojis } from "./models/emojis";
@@ -77,6 +77,11 @@ const markerTypes: MarkerTypeList = [
         icon: EllipseIcon,
         name: "Ellipse (filled)",
         markerType: EllipseMarker,
+      },
+      {
+        icon: TriangleIcon,
+        name: "Triangle",
+        markerType: TriangleMarker,
       },
     ],
   },
@@ -145,10 +150,6 @@ const markerTypes: MarkerTypeList = [
       },
     ],
   },
-  {
-    name: "Emojis",
-    markerTypes: emojis,
-  },
 ];
 
 const flatMarkerTypes: MarkerTypeList = [
@@ -174,9 +175,6 @@ export class EditorToolbar extends BaseToolbar {
   private _deleteButton?: HTMLButtonElement;
 
   private _markerTypeButtons: MarkerTypeGroupButton[] = [];
-
-  private _okButton?: HTMLButtonElement;
-  private _closeButton?: HTMLButtonElement;
 
   private _mode: "select" | "create" | "rendering" = "select";
 
@@ -258,11 +256,6 @@ export class EditorToolbar extends BaseToolbar {
       miniMtgButton.onTypeButtonClick = this.handleMarkerTypeButtonClick;
       this._markerTypeButtons.push(miniMtgButton);
       this._markerTypeMiniContainer?.appendChild(miniMtgButton.getUI());
-
-      this._okButton = this.createActionButton("OK", "save", OkIcon);
-      this._rightActionContainer.appendChild(this._okButton);
-      this._closeButton = this.createActionButton("Close", "close", CloseIcon);
-      this._rightActionContainer.appendChild(this._closeButton);
     }
 
     this.updateToolbarButtons();

@@ -1,7 +1,8 @@
-import { AnnotationState, MarkerArea, Renderer } from "@markerjs/markerjs3";
+import {AnnotationState, MarkerArea, Renderer, ShapeMarkerEditor} from "@markerjs/markerjs3";
 import styles from "./lib.css?inline";
 import { EditorToolbar } from "./EditorToolbar";
 import { EditorToolbox } from "./EditorToolbox";
+import { TriangleMarker } from "./core/TriangleMarker.ts";
 
 /**
  * Annotation editor custom event types.
@@ -257,7 +258,13 @@ export class AnnotationEditor extends HTMLElement {
     if (this.targetImage && this._markerAreaContainer && this._markerArea) {
       this._markerArea.targetImage = this.targetImage;
       this._markerAreaContainer.appendChild(this._markerArea);
+
+      this.registerMarkerType();
     }
+  }
+
+  private registerMarkerType() {
+      this._markerArea.registerMarkerType(TriangleMarker, ShapeMarkerEditor);
   }
 
   private addToolbar() {
