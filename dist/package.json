@@ -1,0 +1,31 @@
+{
+  "name": "@markerjs/markerjs-ui",
+  "version": "1.0.0",
+  "type": "module",
+  "author": "Alan Mendelevich",
+  "license": "MIT",
+  "description": "marker.js UI is a simple and lightweight UI for marker.js, a library for creating image annotations.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ailon/markerjs-ui.git"
+  },
+  "keywords": [
+    "image",
+    "annotation",
+    "web components"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "@markerjs/markerjs3": "^3.5.6"
+  },
+  "exports": {
+    ".": {
+      "import": "./markerjs-ui.js",
+      "require": "./markerjs-ui.umd.cjs"
+    }
+  },
+  "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912",
+  "main": "./markerjs-ui.umd.cjs",
+  "module": "./markerjs-ui.js",
+  "types": "./markerjs-ui.d.ts"
+}
